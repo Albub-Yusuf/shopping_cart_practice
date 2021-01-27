@@ -25,9 +25,9 @@
 
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button id="minus" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <button value="-" id="minus" class="btn btn-default"><i class="fas fa-minus"></i></button>
                            <input id="product1Value" type="text" class="form-control text-center" value="1">
-                           <button id="plus" class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button value="+" id="plus" class="btn btn-default"><i class="fas fa-plus"></i></button>
                         </div>
                         <h5>$ <span id="product1Amount">1000</span></h5>
                         <img src="images/remove.png" alt="" class="remove-item">
@@ -43,12 +43,12 @@
                      </div>
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input type="text" class="form-control text-center" value="1">
-                           <button class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button value="--" id="product2Minus" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input  id="product2value" type="text" class="form-control text-center" value="1">
+                           <button value="++" id="product2Plus" class="btn btn-default"><i class="fas fa-plus"></i></button>
 
                         </div>
-                        <h5>$59</h5>
+                        <h5>$ <span id="product2Amount">10</span></h5>
                         <img src="images/remove.png" alt="" class="remove-item">
                      </div>
                   </div>
@@ -64,9 +64,9 @@
                      </div>
 
                      <div class="col-md-4 status">
-                        <h5>$1,278</h5>
+                        <h5>$ <span id="subtotal">000</span></h5>
                         <h5>$0</h5>
-                        <h5>$1,278</h5>
+                        <h5>$ <span id="total">000</span></h5>
                      </div>
                   </div>
                </div>
@@ -79,55 +79,223 @@
    </section>
 
    <script>
-
+      var counter = 0;
       var count = 0;
+      var count2 = 0;
       var countNumber = 0;
-      var product1Total = 0;
+      var productTotal = 0;
+      var pt1=0;
+      var pt2=0;
       const product1PlusBtn = document.getElementById('plus');
       const product1MinusBtn = document.getElementById('minus');
       const product1Value = document.getElementById('product1Value').value;
       const product1Amount = document.getElementById('product1Amount').innerText;
 
-
-      //alternate addition counter function
-
-      function countAddition(btnId, btnCounterValue, productAmount){
-         var valueNum = parseFloat(btnCounterValue);
-         count += valueNum;
-         product1Total = count * productAmount;
-         document.getElementById('product1Value').btnCounterValue = valueNum;
-         document.getElementById('product1Value').value = count;
-         document.getElementById('product1Amount').innerText = product1Total;
-      }
-
-      ///////////////////////////////////
+      //
+      const product1ValueId = document.getElementById('product1Value');
+      const product1AmountId = document.getElementById('product1Amount');
 
 
-         //alternate addition counter function
+      //for second product
+      const product2PlusBtn = document.getElementById('product2Plus');
+      const product2MinusBtn = document.getElementById('product2Minus');
+      const product2Value = document.getElementById('product2value').value;
+      const product2Amount = document.getElementById('product2Amount').innerText;
 
-         function countSubtraction(btnId, btnCounterValue, productAmount){
-         var valueNum = parseFloat(btnCounterValue);
-         count -= valueNum;
-         if(count <0){
+      //
+      const product2ValueId = document.getElementById('product2value');
+      const product2AmountId = document.getElementById('product2Amount');
+
+
+      //showing subtotal
+      const p1t = parseFloat(product1Amount);
+      const p2t = parseFloat(product2Amount);
+      const sub = document.getElementById('subtotal').innerText;
+      console.log(sub);
+      const subTotal = p1t + p2t;
+      // document.getElementById('subtotal').innerText = subTotal;
+      // document.getElementById('total').innerText = subTotal;
+
+
+
+
+
+
+
+
+        ///////////////////////////////////////////////
+
+       //alternate addition counter function
+
+
+
+
+
+
+       function counterProduct(btnId, btnCounterValue, productAmount, valueId, amountId){
+         
+         if(btnId.value == '+')
+         { 
+            counter = count; 
+         
+         }
+
+         if(btnId.value == '++') 
+         { 
+            counter = count2; 
+            
+         
+         }
+
+         if(btnId.value == '-')
+         { 
+            counter = count; 
+           
+         }
+
+         if(btnId.value == '--') 
+         { 
+            counter = count2; 
+            
+         }
+           var valueNum = parseFloat(btnCounterValue);
+            var vId = valueId;
+            if((btnId.value == '+') || (btnId.value == '++')){
+               counter += valueNum;
+            }
+            if((btnId.value == '-') || (btnId.value == '--')){
+               counter -= valueNum;
+            }
+            if(counter <=0){
             alert('Product Can not be negative');
          }else{
-         product1Total = count * productAmount;
-         document.getElementById('product1Value').btnCounterValue = valueNum;
-         document.getElementById('product1Value').value = count;
-         document.getElementById('product1Amount').innerText = product1Total;
+            productTotal = counter * productAmount;
+            valueId.btnCounterValue = valueNum;
+            valueId.value = counter;
+            amountId.innerText = productTotal;
          }
+         
+            if(btnId.value == '+'){ count = counter;}
+
+            if(btnId.value == '++'){ count2 = counter;}
+
+            if(btnId.value == '-'){ count = counter;}
+
+            if(btnId.value == '--'){ count2 = counter;}
+
+           
+
       }
 
-      ///////////////////////////////////
 
-
+      //product 1 handler
       product1PlusBtn.addEventListener('click',function(){
-          countAddition(product1PlusBtn, product1Value, product1Amount)
+         
+         counterProduct(product1PlusBtn, product1Value, product1Amount,product1ValueId,product1AmountId);
+         
+         product1AddBalance(product1Amount);
       });
 
       product1MinusBtn.addEventListener('click',function(){
-         countSubtraction(product1MinusBtn, product1Value, product1Amount);
+        
+         counterProduct(product1MinusBtn, product1Value, product1Amount,product1ValueId,product1AmountId);
+        
+        
+        product1SubtractBalance(product1Amount);
       });
+
+      //product 2 handler
+
+      product2PlusBtn.addEventListener('click', function(){
+         
+         counterProduct(product2PlusBtn, product2Value, product2Amount, product2ValueId, product2AmountId);
+         
+         
+         product2AddBalance(product2Amount);
+         
+      });
+
+      product2MinusBtn.addEventListener('click', function(){
+         counterProduct(product2MinusBtn, product2Value, product2Amount, product2ValueId, product2AmountId);
+         product2SubtractBalance(product2Amount);
+         
+         
+
+      });
+
+    
+      function product1AddBalance(price){
+
+         var balance = document.getElementById('subtotal').innerText;
+         var balanceNum = parseFloat(balance);
+         var productPrice = price;
+         var priceNum = parseFloat(productPrice);
+         balanceNum += priceNum;
+         if(balance >=0){
+         document.getElementById('subtotal').innerText = balanceNum;
+      document.getElementById('total').innerText = balanceNum;
+      }else{
+         document.getElementById('subtotal').innerText = 000;
+      document.getElementById('total').innerText = 000;
+      }
+   }
+
+   function product2AddBalance(price){
+
+      var balance = document.getElementById('subtotal').innerText;
+      var balanceNum = parseFloat(balance);
+      var productPrice = price;
+      var priceNum = parseFloat(productPrice);
+      balanceNum += priceNum;
+      if(balance >=0){
+         document.getElementById('subtotal').innerText = balanceNum;
+      document.getElementById('total').innerText = balanceNum;
+      }else{
+         document.getElementById('subtotal').innerText = 000;
+      document.getElementById('total').innerText = 000;
+      }
+
+   }
+
+     function product1SubtractBalance(price){
+
+      var balance = document.getElementById('subtotal').innerText;
+      var balanceNum = parseFloat(balance);
+      var productPrice = price;
+      var priceNum = parseFloat(productPrice);
+      balanceNum -= priceNum;
+      if(balance >=0){
+         document.getElementById('subtotal').innerText = balanceNum;
+      document.getElementById('total').innerText = balanceNum;
+      }else{
+         document.getElementById('subtotal').innerText = 000;
+      document.getElementById('total').innerText = 000;
+      }
+
+     }
+
+     function product2SubtractBalance(price){
+
+      var balance = document.getElementById('subtotal').innerText;
+      var balanceNum = parseFloat(balance);
+      var productPrice = price;
+      var priceNum = parseFloat(productPrice);
+      balanceNum -= priceNum;
+      if(balance >=0){
+         document.getElementById('subtotal').innerText = balanceNum;
+      document.getElementById('total').innerText = balanceNum;
+      }else{
+         document.getElementById('subtotal').innerText = 000;
+      document.getElementById('total').innerText = 000;
+      }
+      
+
+}
+
+
+
+
+
 
    </script>
 
