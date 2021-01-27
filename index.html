@@ -25,11 +25,11 @@
 
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input type="text" class="form-control text-center" value="1">
-                           <button class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button id="minus" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input id="product1Value" type="text" class="form-control text-center" value="1">
+                           <button id="plus" class="btn btn-default"><i class="fas fa-plus"></i></button>
                         </div>
-                        <h5>$1219</h5>
+                        <h5>$ <span id="product1Amount">1000</span></h5>
                         <img src="images/remove.png" alt="" class="remove-item">
                      </div>
                   </div>
@@ -77,6 +77,60 @@
          </div>
       </div>
    </section>
+
+   <script>
+
+      var count = 0;
+      var countNumber = 0;
+      var product1Total = 0;
+      const product1PlusBtn = document.getElementById('plus');
+      const product1MinusBtn = document.getElementById('minus');
+      const product1Value = document.getElementById('product1Value').value;
+      const product1Amount = document.getElementById('product1Amount').innerText;
+
+
+      //alternate addition counter function
+
+      function countAddition(btnId, btnCounterValue, productAmount){
+         var valueNum = parseFloat(btnCounterValue);
+         count += valueNum;
+         product1Total = count * productAmount;
+         document.getElementById('product1Value').btnCounterValue = valueNum;
+         document.getElementById('product1Value').value = count;
+         document.getElementById('product1Amount').innerText = product1Total;
+      }
+
+      ///////////////////////////////////
+
+
+         //alternate addition counter function
+
+         function countSubtraction(btnId, btnCounterValue, productAmount){
+         var valueNum = parseFloat(btnCounterValue);
+         count -= valueNum;
+         if(count <0){
+            alert('Product Can not be negative');
+         }else{
+         product1Total = count * productAmount;
+         document.getElementById('product1Value').btnCounterValue = valueNum;
+         document.getElementById('product1Value').value = count;
+         document.getElementById('product1Amount').innerText = product1Total;
+         }
+      }
+
+      ///////////////////////////////////
+
+
+      product1PlusBtn.addEventListener('click',function(){
+          countAddition(product1PlusBtn, product1Value, product1Amount)
+      });
+
+      product1MinusBtn.addEventListener('click',function(){
+         countSubtraction(product1MinusBtn, product1Value, product1Amount);
+      });
+
+   </script>
+
 </body>
 
 </html>
